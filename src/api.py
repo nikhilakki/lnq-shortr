@@ -23,7 +23,7 @@ def health_check():
     return {"response": "Health check success"}
 
 
-@app.post("/shortened-url")
+@app.post("/short-url")
 def shortended_url(generateShortURL: GenerateShortURL):
     url = generateShortURL.url
     short_url = generate_url_hash()
@@ -32,7 +32,7 @@ def shortended_url(generateShortURL: GenerateShortURL):
     return {"response": dict(url=url, short_url=short_url)}
 
 
-@app.get("/all")
+@app.get("/short-url/all")
 def all_records():
     return {item: db.get(item) for item in db.getall()}
 
