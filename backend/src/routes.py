@@ -3,11 +3,13 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
+from os import stat
 from fastapi import APIRouter, Security
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
 from src.hash import generate_url_hash
 from src.models import database, urls_table
+from src.logger import logger as logging
 
 router = APIRouter()
 
@@ -31,9 +33,26 @@ async def all_records():
     return await database.fetch_all(query)
 
 
+@router.delete("/short-url/{id}")  # , dependencies=[Security(azure_scheme)])
+async def delete_record(id: int):
+    try:
+        query = urls_table.delete().where(urls_table.c.id == id)
+        await database.execute(query)
+        return Response(status_code=204)
+
+    except Exception as e:
+        logging.error(e)
+        return Response(status_code=500)
+
+
 @router.get("/{short_url}")
 async def short_to_big_url(short_url: str):
+
     query = urls_table.select().where(urls_table.c.short_url == short_url)
     record = await database.fetch_one(query)
-    url = record[-2]
-    return RedirectResponse(url)
+    print(f"{record=}")
+    if record is not None:
+        redirect_url = record["url"]
+        return RedirectResponse(redirect_url)
+    else:
+        return Response(status_code=404, content="Url not found")

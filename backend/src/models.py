@@ -3,15 +3,11 @@ import os
 from uuid import UUID
 import databases
 import sqlalchemy
-from src.logger import logger as logging
+import logging
 
-if os.getenv("PROD", False):
-    # SQLAlchemy specific code, as with any other app
-    DATABASE_URL = os.getenv(
-        "PGSQL_URI", "postgresql://postgres:postgres@localhost:5432/postgres"
-    )
-else:
-    DATABASE_URL = os.getenv("SQLITE3_URI", "sqlite:///./app.db")
+DATABASE_URL = os.getenv(
+    "PGSQL_URI", "postgresql://postgres:postgres@localhost:5432/postgres"
+)
 
 database = databases.Database(DATABASE_URL)
 
@@ -26,9 +22,7 @@ urls_table = sqlalchemy.Table(
 )
 
 
-engine = sqlalchemy.create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
-)
+engine = sqlalchemy.create_engine(DATABASE_URL)
 
 if __name__ == "__main__":
     metadata.create_all(engine)
