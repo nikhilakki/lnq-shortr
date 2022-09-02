@@ -8,6 +8,7 @@ from typing import Union
 from fastapi import FastAPI, Security
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
+from src.models import database
 import pickledb
 from pydantic import AnyHttpUrl, BaseSettings, Field
 from fastapi.middleware.cors import CORSMiddleware
@@ -68,6 +69,12 @@ async def load_config() -> None:
     Load OpenID config on startup.
     """
     await azure_scheme.openid_config.load_config()
+    await database.connect()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
 
 
 @app.get("/")
@@ -75,7 +82,7 @@ async def health_check():
     return {"response": "Health check success"}
 
 
-@app.post("/short-url", dependencies=[Security(azure_scheme)])
+@app.post("/short-url")  # , dependencies=[Security(azure_scheme)])
 async def shortended_url(generateShortURL: GenerateShortURL):
     url = generateShortURL.url
     short_url = generate_url_hash()
@@ -84,7 +91,7 @@ async def shortended_url(generateShortURL: GenerateShortURL):
     return {"response": dict(url=url, short_url=short_url)}
 
 
-@app.get("/short-url/all", dependencies=[Security(azure_scheme)])
+@app.get("/short-url/all")  # , dependencies=[Security(azure_scheme)])
 async def all_records():
     return {item: db.get(item) for item in db.getall()}
 
