@@ -1,4 +1,6 @@
-import '../styles/globals.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/globals.css';
+import '../styles/header.css';
 import type { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
