@@ -6,16 +6,12 @@
 import os
 from typing import Union
 from fastapi import FastAPI, Security
-from fastapi.responses import RedirectResponse
-from pydantic import BaseModel
-import pickledb
+from src.models import database
 from pydantic import AnyHttpUrl, BaseSettings, Field
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_azure_auth import MultiTenantAzureAuthorizationCodeBearer
-
-from src.hash import generate_url_hash
-
-db = pickledb.load(os.getenv("PICKLE_DB_URI", "test.db"), False)
+from src.routes import router as url_shortr_router
+from src.logger import logger as logging
 
 
 class Settings(BaseSettings):
@@ -39,6 +35,7 @@ app = FastAPI(
         "clientId": settings.OPENAPI_CLIENT_ID,
     },
 )
+app.include_router(url_shortr_router)
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
@@ -58,38 +55,24 @@ azure_scheme = MultiTenantAzureAuthorizationCodeBearer(
 )
 
 
-class GenerateShortURL(BaseModel):
-    url: str
-
-
 @app.on_event("startup")
 async def load_config() -> None:
     """
     Load OpenID config on startup.
     """
+    logging.info("On event - Startup...")
     await azure_scheme.openid_config.load_config()
+    await database.connect()
+    logging.info("On event - Startup Complete!")
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    logging.info("On event - Shutdown...")
+    await database.disconnect()
+    logging.info("On event - Shutdown Complete!")
 
 
 @app.get("/")
 async def health_check():
     return {"response": "Health check success"}
-
-
-@app.post("/short-url", dependencies=[Security(azure_scheme)])
-async def shortended_url(generateShortURL: GenerateShortURL):
-    url = generateShortURL.url
-    short_url = generate_url_hash()
-    db.set(short_url, url)
-    db.dump()
-    return {"response": dict(url=url, short_url=short_url)}
-
-
-@app.get("/short-url/all", dependencies=[Security(azure_scheme)])
-async def all_records():
-    return {item: db.get(item) for item in db.getall()}
-
-
-@app.get("/{shortUrl}")
-async def short_to_big_url(shortUrl: str):
-    record = db.get(shortUrl)
-    return RedirectResponse(record)
