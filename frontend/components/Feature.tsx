@@ -57,8 +57,8 @@ const Feature = () => {
 
   const features = [
     {id : 1, img : "./images/45.png", title : "Shorten URL links", desc : "Generate links one at a time or in bulk", link : "/"},
-    {id : 2, img : "./images/Group Members.png", title : "Powerful Dashboard", desc : "Simple, clean and intuitive User interface", link : "/"},
-    {id : 3, img : "./images/45.png", title : "Export links", desc : "Export links generated to CSV file", link : "/"},
+    {id : 2, img : "./images/UI-Dashboard-Designs_-10-Tips-with-Examples-for-Designers.jpeg", title : "Powerful Dashboard", desc : "Simple, clean and intuitive User interface", link : "/"},
+    {id : 3, img : "./images/export.jpg", title : "Export links", desc : "Export links generated to CSV file", link : "/"},
   ];
 
   return (
