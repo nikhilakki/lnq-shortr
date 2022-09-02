@@ -4,7 +4,7 @@
 # https://opensource.org/licenses/MIT
 
 from fastapi import APIRouter, Security
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
 from src.hash import generate_url_hash
 from src.models import database, urls_table
@@ -33,7 +33,12 @@ async def all_records():
 
 @router.get("/{short_url}")
 async def short_to_big_url(short_url: str):
+
     query = urls_table.select().where(urls_table.c.short_url == short_url)
     record = await database.fetch_one(query)
-    url = record[-2]
-    return RedirectResponse(url)
+    print(f"{record=}")
+    if record is not None:
+        redirect_url = record["url"]
+        return RedirectResponse(redirect_url)
+    else:
+        return Response(status_code=404, content="Url not found")
