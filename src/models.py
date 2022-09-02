@@ -1,5 +1,7 @@
+from enum import unique
 import os
 import logging
+from uuid import UUID
 import databases
 import sqlalchemy
 
@@ -17,12 +19,12 @@ database = databases.Database(DATABASE_URL)
 
 metadata = sqlalchemy.MetaData()
 
-notes = sqlalchemy.Table(
-    "notes",
+urls_table = sqlalchemy.Table(
+    "urls",
     metadata,
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("text", sqlalchemy.String),
-    sqlalchemy.Column("completed", sqlalchemy.Boolean),
+    sqlalchemy.Column("url", sqlalchemy.String),
+    sqlalchemy.Column("short_url", sqlalchemy.String, unique=True),
 )
 
 
