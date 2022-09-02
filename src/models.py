@@ -1,11 +1,9 @@
 from enum import unique
 import os
-import logging
 from uuid import UUID
 import databases
 import sqlalchemy
-
-logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
+from src.logger import logger as logging
 
 if os.getenv("PROD", False):
     # SQLAlchemy specific code, as with any other app

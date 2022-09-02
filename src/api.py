@@ -11,6 +11,7 @@ from pydantic import AnyHttpUrl, BaseSettings, Field
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_azure_auth import MultiTenantAzureAuthorizationCodeBearer
 from src.routes import router as url_shortr_router
+from src.logger import logger as logging
 
 
 class Settings(BaseSettings):
@@ -59,13 +60,17 @@ async def load_config() -> None:
     """
     Load OpenID config on startup.
     """
+    logging.info("On event - Startup...")
     await azure_scheme.openid_config.load_config()
     await database.connect()
+    logging.info("On event - Startup Complete!")
 
 
 @app.on_event("shutdown")
 async def shutdown():
+    logging.info("On event - Shutdown...")
     await database.disconnect()
+    logging.info("On event - Shutdown Complete!")
 
 
 @app.get("/")
