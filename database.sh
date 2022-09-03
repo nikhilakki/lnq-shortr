@@ -4,8 +4,9 @@
 # https://opensource.org/licenses/MIT
 
 #!/bin/zsh
-
+if [[ $1 == "--create-dir" ]]; then
 mkdir sql-data
+fi
 if [[ $1 == "docker" ]]; then
 docker run --rm -d \
     -p 5432:5432 \

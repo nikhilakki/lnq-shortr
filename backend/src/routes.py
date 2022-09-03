@@ -7,6 +7,9 @@ from os import stat
 from fastapi import APIRouter, Security
 from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
+import validators
+from validators.utils import ValidationFailure
+
 from src.hash import generate_url_hash
 from src.models import database, urls_table
 from src.logger import logger as logging
@@ -15,16 +18,23 @@ router = APIRouter()
 
 
 class GenerateShortURL(BaseModel):
+    name: str = None
     url: str
 
 
 @router.post("/short-url")  # , dependencies=[Security(azure_scheme)])
 async def shortended_url(generateShortURL: GenerateShortURL):
     url = generateShortURL.url
-    short_url = generate_url_hash()
-    query = urls_table.insert().values(url=url, short_url=short_url)
-    record_id = await database.execute(query)
-    return {"response": dict(url=url, short_url=short_url, record_id=record_id)}
+    name = generateShortURL.name
+
+    validation = validators.url(url)
+    if validation:
+        short_url = generate_url_hash()
+        query = urls_table.insert().values(name=name, url=url, short_url=short_url)
+        record_id = await database.execute(query)
+        return {"response": dict(url=url, short_url=short_url, record_id=record_id)}
+    else:
+        return Response(status_code=400, content="Url not valid")
 
 
 @router.get("/short-url/all")  # , dependencies=[Security(azure_scheme)])
