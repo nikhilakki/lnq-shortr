@@ -9,14 +9,16 @@ import Hero from "../components/Hero";
 import Feature from '../components/Feature';
 import About from '../components/About';
 import Footer from '../components/Footer';
+import Login from '../components/Login';
 
 const Index = () => {
   return (
     <Layout pageTitle="Shorten URL links with lnq-shortr!">
       <Header />
       <Hero />
-      <Feature/>
+      <Feature />
       <About />
+      <Login />
       <Footer />
     </Layout>
   )
