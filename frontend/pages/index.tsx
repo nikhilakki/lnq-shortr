@@ -10,6 +10,7 @@ import Feature from '../components/Feature';
 import About from '../components/About';
 import Footer from '../components/Footer';
 import Login from '../components/Login';
+import { Col, Container, Row } from 'reactstrap';
 
 const Index = () => {
   return (
@@ -18,7 +19,6 @@ const Index = () => {
       <Hero />
       <Feature />
       <About />
-      <Login />
       <Footer />
     </Layout>
   )

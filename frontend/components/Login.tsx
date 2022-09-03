@@ -6,14 +6,14 @@ export default function Login() {
         return (
             <>
                 Signed in as {session.user.email} <br />
-                <button onClick={() => signOut()}>Sign out</button>
+                <button className='btn btn-danger' onClick={() => signOut()}>Logout</button>
             </>
         )
     }
     return (
         <>
-            Not signed in <br />
-            <button onClick={() => signIn()}>Sign in</button>
+            {/* Not signed in <br /> */}
+            <button className='btn btn-primary' onClick={() => signIn()}>Login</button>
         </>
     )
 }

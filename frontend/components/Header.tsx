@@ -14,6 +14,7 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
+import Login from './Login';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,7 +51,7 @@ const Header = () => {
                 <NavLink href="#about">About</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="#login">Login</NavLink>
+                <Login />
               </NavItem>
             </Nav>
           </Collapse>
