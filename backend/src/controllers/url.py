@@ -19,22 +19,29 @@ router = APIRouter()
 class GenerateShortURL(BaseModel):
     name: str = None
     url: str
+    user_id: str
 
 
 @router.post("/short-url", status_code=201)
 async def shortended_url(generateShortURL: GenerateShortURL):
-    url = generateShortURL.url
-    name = generateShortURL.name
+    try:
+        url = generateShortURL.url
+        name = generateShortURL.name
 
-    validation = validators.url(url)
-    if validation:
-        short_url = generate_url_hash()
-        query = urls_table.insert().values(name=name, url=url, short_url=short_url)
-        record_id = await database.execute(query)
-        response = {"response": dict(url=url, short_url=short_url, record_id=record_id)}
-        return response
-    else:
-        return Response(status_code=400, content="Url not valid")
+        validation = validators.url(url)
+        if validation:
+            short_url = generate_url_hash()
+            query = urls_table.insert().values(name=name, url=url, short_url=short_url)
+            record_id = await database.execute(query)
+            response = {
+                "response": dict(url=url, short_url=short_url, record_id=record_id)
+            }
+            return response
+        else:
+            return Response(status_code=400, content="Url not valid")
+    except Exception as e:
+        logging.error(f"{e}")
+        return Response(content="Spmeting went wrong!", status_code=500)
 
 
 @router.get("/short-url/all", status_code=200)
