@@ -3,13 +3,10 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-from os import stat
-from fastapi import APIRouter, Security
+from fastapi import APIRouter
 from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
 import validators
-from validators.utils import ValidationFailure
-
 from src.hash import generate_url_hash
 from src.models import database, urls_table
 from src.logger import logger as logging
@@ -22,7 +19,7 @@ class GenerateShortURL(BaseModel):
     url: str
 
 
-@router.post("/short-url")  # , dependencies=[Security(azure_scheme)])
+@router.post("/short-url")
 async def shortended_url(generateShortURL: GenerateShortURL):
     url = generateShortURL.url
     name = generateShortURL.name
@@ -37,13 +34,13 @@ async def shortended_url(generateShortURL: GenerateShortURL):
         return Response(status_code=400, content="Url not valid")
 
 
-@router.get("/short-url/all")  # , dependencies=[Security(azure_scheme)])
+@router.get("/short-url/all")
 async def all_records():
     query = urls_table.select()
     return await database.fetch_all(query)
 
 
-@router.delete("/short-url/{id}")  # , dependencies=[Security(azure_scheme)])
+@router.delete("/short-url/{id}")
 async def delete_record(id: int):
     try:
         query = urls_table.delete().where(urls_table.c.id == id)

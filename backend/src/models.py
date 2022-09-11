@@ -8,7 +8,8 @@ from sqlalchemy.sql import func
 
 
 DATABASE_URL = os.getenv(
-    "PGSQL_URI", "postgresql://postgres:postgres@localhost:5432/postgres"
+    "DATABASE_URI",
+    f"sqlite:///{os.path.join(os.getcwd(), 'app.db')}?check_same_thread=False",
 )
 
 database = databases.Database(DATABASE_URL)
