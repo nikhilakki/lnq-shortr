@@ -24,15 +24,15 @@ async def getUsers():
     query = user_table.select()
     response = await database.fetch_all(query)
     logging.debug(f"{response=}")
-    return Response(content=response, status_code=200)
+    return response
 
 
 @router.get("/user/{id}", status_code=202)
 async def getUser(id: int):
     query = user_table.select().where(user_table.c.id == id)
-    response = await database.execute(query)
+    response = await database.fetch_one(query)
     logging.debug(f"{response=}")
-    return Response(content=response, status_code=200)
+    return response
 
 
 @router.post("/user", status_code=201)
@@ -40,15 +40,21 @@ async def createUser(userDto: UserDto):
     query = user_table.insert().values({**userDto.dict()})
     response = await database.execute(query)
     logging.debug(f"{response=}")
-    return Response(content=response, status_code=201)
+    return {"id": response}
 
 
 @router.patch("/user/{id}", status_code=200)
 async def updateUser(userDto: UserDto, id: int):
-    query = user_table.update().where(user_table.c.id == id).values({**userDto.dict()})
-    response = await database.execute(query)
-    logging.debug(f"{response=}")
-    return response
+    try:
+        query = (
+            user_table.update().where(user_table.c.id == id).values({**userDto.dict()})
+        )
+        response = await database.execute(query)
+        logging.debug(f"{response=}")
+        return Response(content="Success", status_code=200)
+    except Exception as e:
+        logging.error(f"Error = {e}")
+        return Response(content="Something went wrong!", status_code=500)
 
 
 @router.delete("/user/{id}")
