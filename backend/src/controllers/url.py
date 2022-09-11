@@ -3,13 +3,15 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
+from os import stat
 from fastapi import APIRouter
 from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
 import validators
-from src.hash import generate_url_hash
+from src.core.hash import generate_url_hash
 from src.models import database, urls_table
-from src.logger import logger as logging
+from src.utils.logger import logger as logging
+
 
 router = APIRouter()
 
@@ -19,7 +21,7 @@ class GenerateShortURL(BaseModel):
     url: str
 
 
-@router.post("/short-url")
+@router.post("/short-url", status_code=201)
 async def shortended_url(generateShortURL: GenerateShortURL):
     url = generateShortURL.url
     name = generateShortURL.name
@@ -29,15 +31,17 @@ async def shortended_url(generateShortURL: GenerateShortURL):
         short_url = generate_url_hash()
         query = urls_table.insert().values(name=name, url=url, short_url=short_url)
         record_id = await database.execute(query)
-        return {"response": dict(url=url, short_url=short_url, record_id=record_id)}
+        response = {"response": dict(url=url, short_url=short_url, record_id=record_id)}
+        return response
     else:
         return Response(status_code=400, content="Url not valid")
 
 
-@router.get("/short-url/all")
+@router.get("/short-url/all", status_code=200)
 async def all_records():
     query = urls_table.select()
-    return await database.fetch_all(query)
+    response = await database.fetch_all(query)
+    return response
 
 
 @router.delete("/short-url/{id}")
@@ -54,7 +58,6 @@ async def delete_record(id: int):
 
 @router.get("/{short_url}")
 async def short_to_big_url(short_url: str):
-
     query = urls_table.select().where(urls_table.c.short_url == short_url)
     record = await database.fetch_one(query)
     print(f"{record=}")

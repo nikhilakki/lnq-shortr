@@ -7,7 +7,7 @@
 
 # URL Link Shortener app
 
-Source code for [lnqshortr.com](https://lnqshortr.com) backend.
+Source code for [lnqshortr.com](https://lnqshortr.com) 
 
 This app is URL-Link shorter service built using Python-FastAPI
 

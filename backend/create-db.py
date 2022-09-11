@@ -3,7 +3,7 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-from src.logger import logging
+from src.utils.logger import logging
 from src.models import metadata, engine
 
 if __name__ == "__main__":

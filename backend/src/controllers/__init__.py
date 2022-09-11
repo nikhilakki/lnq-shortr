@@ -3,4 +3,5 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-from src.utils.logger import logger as logging
+from .url import router as url_router
+from .user import router as user_router

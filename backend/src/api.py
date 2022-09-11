@@ -8,8 +8,8 @@ from fastapi import FastAPI
 from src.models import database
 from pydantic import AnyHttpUrl, BaseSettings, Field
 from fastapi.middleware.cors import CORSMiddleware
-from src.routes import router as url_shortr_router
-from src.logger import logger as logging
+from src.controllers import url_router, user_router
+from src.utils.logger import logger as logging
 
 
 class Settings(BaseSettings):
@@ -30,7 +30,8 @@ class Settings(BaseSettings):
 settings = Settings()
 
 app = FastAPI()
-app.include_router(url_shortr_router)
+app.include_router(url_router, tags=["URL Routes"])
+app.include_router(user_router, tags=["User Routes"])
 
 if settings.CORS_ORIGINS:
     app.add_middleware(
