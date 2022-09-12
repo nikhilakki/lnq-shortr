@@ -3,25 +3,33 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, Security
+from src.utils.auth import auth, Auth0User
 from src.services import url, GenerateShortURL
 
 router = APIRouter()
 
 
-@router.post("/short-url", status_code=201)
-async def shortended_url(generateShortURL: GenerateShortURL):
-    return await url.shortended_url(generateShortURL)
+@router.post(
+    "/short-url", status_code=201, dependencies=[Depends(auth.implicit_scheme)]
+)
+async def shorten_url(
+    generateShortURL: GenerateShortURL,
+    user: Auth0User = Security(auth.get_user, scopes=[]),
+):
+    return await url.shorten_url(generateShortURL)
 
 
-@router.get("/short-url/all", status_code=200)
-async def all_records():
-    return await url.all_records()
+@router.get(
+    "/short-url/all", status_code=200, dependencies=[Depends(auth.implicit_scheme)]
+)
+async def get_url_all(user: Auth0User = Security(auth.get_user, scopes=[])):
+    return await url.get_url_all()
 
 
-@router.delete("/short-url/{id}")
-async def delete_record(id: int):
-    return await url.delete_record(id)
+@router.delete("/short-url/{id}", dependencies=[Depends(auth.implicit_scheme)])
+async def delete_url(id: int, user: Auth0User = Security(auth.get_user, scopes=[])):
+    return await url.delete_url(id)
 
 
 @router.get("/{short_url}")
