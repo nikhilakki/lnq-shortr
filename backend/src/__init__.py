@@ -14,8 +14,8 @@ class Settings(BaseSettings):
     ]
     DOMAIN: str
     API_AUDIENCE: str
-    ALGORITHMS: str
-    ISSUER: str
+    # ALGORITHMS: str
+    # ISSUER: str
 
     class Config:
         env_file = ".env"
