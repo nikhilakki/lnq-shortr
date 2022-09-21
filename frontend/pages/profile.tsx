@@ -3,42 +3,67 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { useMsal } from "@azure/msal-react"
-import { useState } from "react"
+import {
+  InteractionRequiredAuthError,
+  InteractionStatus,
+} from "@azure/msal-browser"
+import { AuthenticatedTemplate, useMsal } from "@azure/msal-react"
+import { useEffect, useState } from "react"
 
-export default function ProfileContent() {
-  const { instance, accounts, inProgress } = useMsal()
-  const [accessToken, setAccessToken] = useState(null)
+async function callApi(accessToken: string) {
+  console.log({ accessToken })
+  return { response: accessToken }
+}
+function ProtectedComponent() {
+  const { instance, inProgress, accounts } = useMsal()
+  const [apiData, setApiData] = useState([])
 
-  const name = accounts[0] && accounts[0].name
-
-  function RequestAccessToken() {
-    const request = {
-      ...loginRequest,
-      account: accounts[0],
-    }
-
-    // Silently acquires an access token which is then attached to a request for Microsoft Graph data
-    instance
-      .acquireTokenSilent(request)
-      .then((response) => {
-        setAccessToken(response.accessToken)
-      })
-      .catch((e) => {
-        instance.acquireTokenPopup(request).then((response) => {
-          setAccessToken(response.accessToken)
+  console.log({ inProgress, accounts })
+  useEffect(() => {
+    if (!apiData && inProgress === InteractionStatus.None) {
+      const accessTokenRequest = {
+        scopes: ["user.read"],
+        account: accounts[0],
+      }
+      instance
+        .acquireTokenSilent(accessTokenRequest)
+        .then((accessTokenResponse) => {
+          // Acquire token silent success
+          let accessToken = accessTokenResponse.accessToken
+          // Call your API with token
+          callApi(accessToken).then((response) => {
+            setApiData(response)
+          })
         })
-      })
-  }
+        .catch((error) => {
+          if (error instanceof InteractionRequiredAuthError) {
+            instance
+              .acquireTokenPopup(accessTokenRequest)
+              .then(function (accessTokenResponse) {
+                // Acquire token interactive success
+                let accessToken = accessTokenResponse.accessToken
+                // Call your API with token
+                callApi(accessToken).then((response) => {
+                  setApiData(response)
+                })
+              })
+              .catch(function (error) {
+                // Acquire token interactive failure
+                console.log(error)
+              })
+          }
+          console.log(error)
+        })
+    }
+  }, [instance, accounts, inProgress, apiData])
 
+  return <p>Return your protected content here: {apiData}</p>
+}
+
+export default function Profile() {
   return (
-    <>
-      <h5 className="card-title">Welcome {name}</h5>
-      {accessToken ? (
-        <p>Access Token Acquired!</p>
-      ) : (
-        <button onClick={RequestAccessToken}>Request Access Token</button>
-      )}
-    </>
+    <AuthenticatedTemplate>
+      <ProtectedComponent />
+    </AuthenticatedTemplate>
   )
 }

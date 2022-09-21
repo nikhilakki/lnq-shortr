@@ -7,53 +7,53 @@ import { useEffect, useState } from "react"
 import CONFIG from "../../utils"
 
 const InputBox = (props) => {
-    const [generateClick, setGenerateClick] = useState(true)
-    const [name, setName] = useState("")
-    const [url, setUrl] = useState("")
+  const [generateClick, setGenerateClick] = useState(true)
+  const [name, setName] = useState("")
+  const [url, setUrl] = useState("")
 
-    const handleClick = async () => {
-        setGenerateClick(true)
-        props.setLoading(true)
+  const handleClick = async () => {
+    setGenerateClick(true)
+    props.setLoading(true)
+  }
+
+  useEffect(() => {
+    const callApi = async () => {
+      // console.log({ name, url })
+      if (url?.length > 0) {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, url }),
+        }
+        const response = await fetch(
+          `${CONFIG.BACKEND_URL}/short-url`,
+          requestOptions
+        )
+          .then((data) => data.json())
+          .catch((err) => console.error(err))
+        console.log({ response })
+      }
+    }
+    if (generateClick) {
+      callApi()
+    }
+    return () => {
+      setGenerateClick(false)
+      setName("")
+      setUrl("")
     }
 
-    useEffect(() => {
-        const callApi = async () => {
-            // console.log({ name, url })
-            if (url?.length > 0) {
-                const requestOptions = {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, url }),
-                }
-                const response = await fetch(
-                    `${CONFIG.BACKEND_URL}/short-url`,
-                    requestOptions
-                )
-                    .then((data) => data.json())
-                    .catch((err) => console.error(err))
-                console.log({ response })
-            }
-        }
-        if (generateClick) {
-            callApi()
-        }
-        return () => {
-            setGenerateClick(false)
-            setName("")
-            setUrl("")
-        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [generateClick, props.loading])
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [generateClick, props.loading])
-
-    return (
-        <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
-            <h2 className="font-mono">Generate short links</h2>
-            <br />
-            <div className="flex m-auto form-group mb-6">
-                <input
-                    type="url"
-                    className="form-control block
+  return (
+    <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
+      <h2 className="font-mono">Generate short links</h2>
+      <br />
+      <div className="flex m-auto form-group mb-6">
+        <input
+          type="url"
+          className="form-control block
           w-full
           px-3
           py-1.5
@@ -67,16 +67,16 @@ const InputBox = (props) => {
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    id="nameInput"
-                    placeholder="Name (optional)"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-            </div>
-            <div className="flex m-auto form-group mb-6">
-                <input
-                    type="url"
-                    className="form-control block
+          id="nameInput"
+          placeholder="Name (optional)"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <div className="flex m-auto form-group mb-6">
+        <input
+          type="url"
+          className="form-control block
           w-full
           px-3
           py-1.5
@@ -90,15 +90,15 @@ const InputBox = (props) => {
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    id="urlInput"
-                    placeholder="URL Link"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                />
-            </div>
-            <button
-                onClick={handleClick}
-                className="
+          id="urlInput"
+          placeholder="URL Link"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+        />
+      </div>
+      <button
+        onClick={handleClick}
+        className="
         w-full
         px-6
         py-2.5
@@ -116,11 +116,11 @@ const InputBox = (props) => {
         transition
         duration-150
         ease-in-out"
-            >
-                Generate
-            </button>
-        </div>
-    )
+      >
+        Generate
+      </button>
+    </div>
+  )
 }
 
 export default InputBox

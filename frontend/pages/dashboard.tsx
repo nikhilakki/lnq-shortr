@@ -1,17 +1,15 @@
-import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0"
+import { AuthenticatedTemplate, useIsAuthenticated } from "@azure/msal-react"
 import Layout from "../components/Dashboard/Layout"
 import { useEffect, useMemo, useState } from "react"
 import Table from "../components/Dashboard/Table"
 import InputBox from "../components/Dashboard/InputBox"
 import CONFIG from "../utils"
-import { useRouter } from "next/router"
 
-export default withPageAuthRequired(function Dashboard({ user }) {
-  const { error, isLoading } = useUser()
+export default function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState([])
-
-  const router = useRouter()
+  const user = useIsAuthenticated()
+  // const router = useRouter()
 
   const deleteAction = async (id) => {
     const resquestOptions = {
@@ -96,29 +94,28 @@ export default withPageAuthRequired(function Dashboard({ user }) {
     }
   }, [loading])
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>{error.message}</div>
-
   return (
-    <>
-      {user && (
-        <Layout>
-          <div className="px-6 pt-6 xl:container">
-            <div className="grid gap-1 md:grid-cols-1 lg:grid-cols-1">
-              <InputBox loading={loading} setLoading={setLoading} />
-            </div>
-            <br />
-            <div className="grid gap-1 md:grid-cols-1 lg:grid-cols-1">
-              <h3 className="flex font-mono m-auto">
-                Short links created by you!
-              </h3>
+    <AuthenticatedTemplate>
+      <>
+        {user && (
+          <Layout>
+            <div className="px-6 pt-6 xl:container">
+              <div className="grid gap-1 md:grid-cols-1 lg:grid-cols-1">
+                <InputBox loading={loading} setLoading={setLoading} />
+              </div>
+              <br />
+              <div className="grid gap-1 md:grid-cols-1 lg:grid-cols-1">
+                <h3 className="flex font-mono m-auto">
+                  Short links created by you!
+                </h3>
 
-              <Table columns={columns} data={data} />
+                <Table columns={columns} data={data} />
+              </div>
             </div>
-          </div>
-        </Layout>
-      )}
-      {!user && router.push(`${CONFIG.FRONTEND_URL}/`)}
-    </>
+          </Layout>
+        )}
+        {/* {!user && router.push(`${CONFIG.FRONTEND_URL}/`)} */}
+      </>
+    </AuthenticatedTemplate>
   )
-})
+}
