@@ -11,26 +11,23 @@ router = APIRouter()
 
 
 @router.post(
-    "/short-url", status_code=201, dependencies=[Depends(auth.implicit_scheme)]
-)
+    "/short-url", status_code=201)#, dependencies=[Depends(auth.implicit_scheme)])
 async def shorten_url(
     generateShortURL: GenerateShortURL,
-    user: Auth0User = Security(auth.get_user, scopes=["user"]),
+    # user: Auth0User = Security(auth.get_user, scopes=["user"]),
 ):
     return await url.shorten_url(generateShortURL)
 
 
 @router.get(
-    "/short-url/all", status_code=200, dependencies=[Depends(auth.implicit_scheme)]
-)
-async def get_url_all(user: Auth0User = Security(auth.get_user, scopes=["user"])):
+    "/short-url/all", status_code=200)#, dependencies=[Depends(auth.implicit_scheme)])
+async def get_url_all():#(user: Auth0User = Security(auth.get_user, scopes=["user"])):
     return await url.get_url_all()
 
 
-@router.delete("/short-url/{id}", dependencies=[Depends(auth.implicit_scheme)])
+@router.delete("/short-url/{id}")#, dependencies=[Depends(auth.implicit_scheme)])
 async def delete_url(
-    id: int, user: Auth0User = Security(auth.get_user, scopes=["user"])
-):
+    id: int):#, user: Auth0User = Security(auth.get_user, scopes=["user"])):
     return await url.delete_url(id)
 
 
