@@ -4,9 +4,10 @@
 # https://opensource.org/licenses/MIT
 
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Security
 from src.models import database
 from fastapi.middleware.cors import CORSMiddleware
+
 from src.controllers import (
     url_router,
     user_router,
@@ -14,15 +15,24 @@ from src.controllers import (
     aggregation_router,
     auth_router,
 )
-from src.utils.logger import logger as logging
-from . import settings
 
-app = FastAPI()
+from src.utils.logger import logger as logging
+from . import settings, azure_scheme
+
+app = FastAPI(
+    swagger_ui_oauth2_redirect_url="/oauth2-redirect",
+    swagger_ui_init_oauth={
+        "usePkceWithAuthorizationCodeGrant": True,
+        "clientId": settings.OPENAPI_CLIENT_ID,
+    },
+)
+
 app.include_router(url_router, tags=["URL API"])
 app.include_router(user_router, tags=["User API"])
 app.include_router(quota_router, tags=["Quota API"])
 app.include_router(aggregation_router, tags=["Aggregation API"])
 app.include_router(auth_router, tags=["Auth API"])
+
 
 if settings.CORS_ORIGINS:
     app.add_middleware(
@@ -34,7 +44,7 @@ if settings.CORS_ORIGINS:
     )
 
 
-@app.get("/config/all")
+@app.get("/config/all", dependencies=[Security(azure_scheme)])
 def return_config():
     logging.debug(f"{settings}")
     return settings.dict()
@@ -47,6 +57,7 @@ async def load_config() -> None:
     """
     logging.info("On event - Startup...")
     await database.connect()
+    await azure_scheme.openid_config.load_config()
     logging.info("On event - Startup Complete!")
 
 

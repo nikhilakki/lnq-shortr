@@ -7,19 +7,17 @@
 Aggregation layer
 """
 
-from fastapi import APIRouter, Depends, Security
+from fastapi import APIRouter, Security
 from src.utils.logger import logging
 from src.services import user, quota, url, GenerateShortURL
-from src.utils.auth import Auth0User, auth
-
+from src import azure_scheme
 
 router = APIRouter()
 
 
-@router.post("/aggregation/short-url", dependencies=[Depends(auth.implicit_scheme)])
+@router.post("/aggregation/short-url", dependencies=[Security(azure_scheme)])
 async def generateShortUrl(
     generateShortURL: GenerateShortURL,
-    user: Auth0User = Security(auth.get_user, scopes=[]),
 ):
     """
     Step - 1: Generate short url

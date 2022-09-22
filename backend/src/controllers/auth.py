@@ -5,14 +5,14 @@
 
 
 from fastapi import APIRouter, Response, status
-from fastapi import Depends, Security
-from src.utils.auth import Auth0User, auth
+from fastapi import Security
+from src import azure_scheme
 
 router = APIRouter()
 
 
-@router.get("/auth/public", dependencies=[Depends(auth.implicit_scheme)])
-def public(user: Auth0User = Security(auth.get_user, scopes=[])):
+@router.get("/auth/public", dependencies=[Security(azure_scheme)])
+def public():
     """No access token required to access this route"""
 
     result = {
@@ -25,6 +25,6 @@ def public(user: Auth0User = Security(auth.get_user, scopes=[])):
     return result
 
 
-@router.get("/auth/secure", dependencies=[Depends(auth.implicit_scheme)])
-def get_secure(user: Auth0User = Security(auth.get_user, scopes=[])):
+@router.get("/auth/secure", dependencies=[Security(azure_scheme)])
+def get_secure():
     return {"message": f"{user}"}
