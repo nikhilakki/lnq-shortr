@@ -3,18 +3,10 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import {
-  AuthenticatedTemplate,
-  UnauthenticatedTemplate,
-  useMsal,
-} from "@azure/msal-react"
 import Image from "next/image"
 import Link from "next/link"
-import SignInBtn from "../Common/SignInBtn"
-import SignOutBtn from "../Common/SignOutBtn"
 
 const Navbar = () => {
-  const { instance } = useMsal()
   const navObjects = [
     {
       id: 0,
@@ -100,36 +92,26 @@ const Navbar = () => {
             id="mobile-menu-2"
           >
             <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-              <UnauthenticatedTemplate>
-                <>
-                  {navObjects.map((item) => (
-                    <li key={item.id}>
-                      <Link href={item.link}>
-                        <a>{item.name}</a>
-                      </Link>
-                    </li>
-                  ))}
-                  <li>
-                    <SignInBtn />
+              <>
+                {navObjects.map((item) => (
+                  <li key={item.id}>
+                    <Link href={item.link}>
+                      <a>{item.name}</a>
+                    </Link>
                   </li>
-                </>
-              </UnauthenticatedTemplate>
+                ))}
+              </>
 
-              <AuthenticatedTemplate>
-                <li>
-                  <Link href="/">
-                    <a>Home</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/dashboard">
-                    <a>Dashboard</a>
-                  </Link>
-                </li>
-                <li>
-                  <SignOutBtn />
-                </li>
-              </AuthenticatedTemplate>
+              <li>
+                <Link href="/">
+                  <a>Home</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/dashboard">
+                  <a>Dashboard</a>
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

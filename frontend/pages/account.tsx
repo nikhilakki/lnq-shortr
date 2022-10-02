@@ -3,12 +3,10 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { useMsal, useIsAuthenticated } from "@azure/msal-react"
 import Layout from "../components/Dashboard/Layout"
 
 const Account = () => {
-  const user = useIsAuthenticated()
-  const { accounts } = useMsal()
+  const user = true
 
   return (
     <Layout>
@@ -18,11 +16,9 @@ const Account = () => {
             <div className="h-full py-6 px-6 rounded-xl border border-gray-200 bg-white">
               <div className="my-8">
                 <h1 className="text-3xl font-bold text-gray-800">
-                  {user ? accounts[0].name : "Dummy"}
+                  {user ? "Dum" : "Dummy"}
                 </h1>
-                <span className="text-gray-500">
-                  {user ? accounts[0].username : "Admin"}
-                </span>
+                <span className="text-gray-500">{user ? "Dum" : "Admin"}</span>
               </div>
               <h5 className="text-xl text-gray-700">
                 Quota Usage <em>(coming soon...)</em>

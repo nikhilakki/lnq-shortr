@@ -3,24 +3,23 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-from fastapi import APIRouter, Security
+from fastapi import APIRouter
 from src.services import url, GenerateShortURL
-from src import azure_scheme
 
 router = APIRouter()
 
 
-@router.post("/short-url", status_code=201, dependencies=[Security(azure_scheme)])
+@router.post("/short-url", status_code=201)
 async def shorten_url(generateShortURL: GenerateShortURL):
     return await url.shorten_url(generateShortURL)
 
 
-@router.get("/short-url/all", status_code=200, dependencies=[Security(azure_scheme)])
+@router.get("/short-url/all", status_code=200)
 async def get_url_all():
     return await url.get_url_all()
 
 
-@router.delete("/short-url/{id}", dependencies=[Security(azure_scheme)])
+@router.delete("/short-url/{id}")
 async def delete_url(id: int):
     return await url.delete_url(id)
 

@@ -1,15 +1,8 @@
-import '../styles/globals.css';
-import { MsalProvider } from '@azure/msal-react';
-import { AppProps } from 'next/app';
-import { msalInstance } from '../services/msal';
-
+import "../styles/globals.css"
+import { AppProps } from "next/app"
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <MsalProvider instance={msalInstance}>
-      <Component {...pageProps} />
-    </MsalProvider>
-  );
+  return <Component {...pageProps} />
 }
 
-export default MyApp;
+export default MyApp

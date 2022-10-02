@@ -10,8 +10,6 @@
     "export": "next build && next export"
   },
   "dependencies": {
-    "@azure/msal-browser": "^2.28.3",
-    "@azure/msal-react": "^1.4.7",
     "@types/react-table": "^7.7.12",
     "next": "12.3.0",
     "react": "18.2.0",

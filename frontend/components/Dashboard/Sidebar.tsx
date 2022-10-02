@@ -3,14 +3,11 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { useIsAuthenticated, useMsal } from "@azure/msal-react"
 import Image from "next/image"
 import Link from "next/link"
 
 const Sidebar = () => {
-  const { accounts } = useMsal()
-  const user = useIsAuthenticated()
-  console.log({ user, accounts })
+  const user = ""
   return (
     <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
       <div>
@@ -37,12 +34,6 @@ const Sidebar = () => {
             height="128"
             className="w-10 h-10 m-auto object-cover rounded-full lg:w-28 lg:h-28"
           />
-          <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">
-            {user ? accounts[0].name : "User Info not found"}
-          </h5>
-          <span className="hidden text-gray-400 lg:block">
-            {user ? accounts[0].username : "Admin"}
-          </span>
         </div>
 
         <ul className="space-y-2 tracking-wide mt-8">

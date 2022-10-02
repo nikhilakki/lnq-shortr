@@ -4,14 +4,12 @@
 # https://opensource.org/licenses/MIT
 
 
-from fastapi import APIRouter, Response, status
-from fastapi import Security
-from src import azure_scheme
+from fastapi import APIRouter
 
 router = APIRouter()
 
 
-@router.get("/auth/public", dependencies=[Security(azure_scheme)])
+@router.get("/auth/public")
 def public():
     """No access token required to access this route"""
 
@@ -25,6 +23,6 @@ def public():
     return result
 
 
-@router.get("/auth/secure", dependencies=[Security(azure_scheme)])
+@router.get("/auth/secure")
 def get_secure():
     return {"message": f"{user}"}

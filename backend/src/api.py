@@ -4,7 +4,7 @@
 # https://opensource.org/licenses/MIT
 
 
-from fastapi import FastAPI, Security
+from fastapi import FastAPI
 from src.models import database
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,15 +17,9 @@ from src.controllers import (
 )
 
 from src.utils.logger import logger as logging
-from . import settings, azure_scheme
+from . import settings
 
-app = FastAPI(
-    swagger_ui_oauth2_redirect_url="/oauth2-redirect",
-    swagger_ui_init_oauth={
-        "usePkceWithAuthorizationCodeGrant": True,
-        "clientId": settings.OPENAPI_CLIENT_ID,
-    },
-)
+app = FastAPI()
 
 app.include_router(url_router, tags=["URL API"])
 app.include_router(user_router, tags=["User API"])
@@ -44,7 +38,7 @@ if settings.CORS_ORIGINS:
     )
 
 
-@app.get("/config/all", dependencies=[Security(azure_scheme)])
+@app.get("/config/all")
 def return_config():
     logging.debug(f"{settings}")
     return settings.dict()
@@ -57,7 +51,6 @@ async def load_config() -> None:
     """
     logging.info("On event - Startup...")
     await database.connect()
-    await azure_scheme.openid_config.load_config()
     logging.info("On event - Startup Complete!")
 
 

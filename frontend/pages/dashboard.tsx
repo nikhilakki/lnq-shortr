@@ -1,4 +1,3 @@
-import { AuthenticatedTemplate, useIsAuthenticated } from "@azure/msal-react"
 import Layout from "../components/Dashboard/Layout"
 import { useEffect, useMemo, useState } from "react"
 import Table from "../components/Dashboard/Table"
@@ -8,7 +7,7 @@ import CONFIG from "../utils"
 export default function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState([])
-  const user = useIsAuthenticated()
+  const user = true
   // const router = useRouter()
 
   const deleteAction = async (id) => {
@@ -95,27 +94,25 @@ export default function Dashboard() {
   }, [loading])
 
   return (
-    <AuthenticatedTemplate>
-      <>
-        {user && (
-          <Layout>
-            <div className="px-6 pt-6 xl:container">
-              <div className="grid gap-1 md:grid-cols-1 lg:grid-cols-1">
-                <InputBox loading={loading} setLoading={setLoading} />
-              </div>
-              <br />
-              <div className="grid gap-1 md:grid-cols-1 lg:grid-cols-1">
-                <h3 className="flex font-mono m-auto">
-                  Short links created by you!
-                </h3>
-
-                <Table columns={columns} data={data} />
-              </div>
+    <>
+      {user && (
+        <Layout>
+          <div className="px-6 pt-6 xl:container">
+            <div className="grid gap-1 md:grid-cols-1 lg:grid-cols-1">
+              <InputBox loading={loading} setLoading={setLoading} />
             </div>
-          </Layout>
-        )}
-        {/* {!user && router.push(`${CONFIG.FRONTEND_URL}/`)} */}
-      </>
-    </AuthenticatedTemplate>
+            <br />
+            <div className="grid gap-1 md:grid-cols-1 lg:grid-cols-1">
+              <h3 className="flex font-mono m-auto">
+                Short links created by you!
+              </h3>
+
+              <Table columns={columns} data={data} />
+            </div>
+          </div>
+        </Layout>
+      )}
+      {/* {!user && router.push(`${CONFIG.FRONTEND_URL}/`)} */}
+    </>
   )
 }
