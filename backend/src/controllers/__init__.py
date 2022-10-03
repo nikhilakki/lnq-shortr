@@ -7,4 +7,3 @@ from .url import router as url_router
 from .user import router as user_router
 from .quota import router as quota_router
 from .aggregation import router as aggregation_router
-from .auth import router as auth_router

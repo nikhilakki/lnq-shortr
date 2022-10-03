@@ -14,6 +14,7 @@ from src.utils.logger import logger as logging
 class GenerateShortURL(BaseModel):
     name: str = None
     url: str
+    user_id: int = None
 
 
 async def get_user_record_by_email(email: str = None):
@@ -30,7 +31,11 @@ async def shorten_url(
     try:
         url = generateShortURL.url
         name = generateShortURL.name
-        user_id = get_user_record_by_email(user_email)["id"]
+        user_id = (
+            user_id
+            if user_id is not None
+            else await get_user_record_by_email(user_email)["id"]
+        )
         logging.debug(f"{user_id=}")
         validation = validators.url(url)
         if validation:

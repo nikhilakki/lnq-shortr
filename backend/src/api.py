@@ -13,7 +13,6 @@ from src.controllers import (
     user_router,
     quota_router,
     aggregation_router,
-    auth_router,
 )
 
 from src.utils.logger import logger as logging
@@ -25,7 +24,6 @@ app.include_router(url_router, tags=["URL API"])
 app.include_router(user_router, tags=["User API"])
 app.include_router(quota_router, tags=["Quota API"])
 app.include_router(aggregation_router, tags=["Aggregation API"])
-app.include_router(auth_router, tags=["Auth API"])
 
 
 if settings.CORS_ORIGINS:

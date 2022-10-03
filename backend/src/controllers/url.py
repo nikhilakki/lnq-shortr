@@ -11,7 +11,7 @@ router = APIRouter()
 
 @router.post("/short-url", status_code=201)
 async def shorten_url(generateShortURL: GenerateShortURL):
-    return await url.shorten_url(generateShortURL)
+    return await url.shorten_url(generateShortURL, generateShortURL.user_id)
 
 
 @router.get("/short-url/all", status_code=200)
