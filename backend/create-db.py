@@ -3,9 +3,9 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-import uvicorn
-from src.api import app
-
+from src.utils.logger import logging
+from src.models import metadata, engine
 
 if __name__ == "__main__":
-    uvicorn.run("src.api:app", host="0.0.0.0", port=8000, reload=True)
+    metadata.create_all(engine)
+    logging.info("Table created!")
