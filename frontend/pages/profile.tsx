@@ -3,12 +3,12 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import AccessToken from "../components/accessToken"
+import AccessTokenComponent from "../components/AccessToken"
 
 const profile = () => {
   return (
     <div>
-      <AccessToken />
+      <AccessTokenComponent />
     </div>
   )
 }

@@ -23,10 +23,10 @@ const InputBox = (props) => {
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, url }),
+          body: JSON.stringify({ name, url, user_id: 1 }),
         }
         const response = await fetch(
-          `${CONFIG.BACKEND_URL}/short-url`,
+          `http://localhost:3000/api/urls`,
           requestOptions
         )
           .then((data) => data.json())

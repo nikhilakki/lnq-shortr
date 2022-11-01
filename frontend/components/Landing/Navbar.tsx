@@ -5,6 +5,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import LoginComponent from "../Login"
 
 const Navbar = () => {
   const navObjects = [
@@ -113,6 +114,7 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
+            <LoginComponent />
           </div>
         </div>
       </nav>
