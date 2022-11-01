@@ -3,34 +3,28 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
-from typing import Union
+
 from fastapi import FastAPI
 from src.models import database
-from pydantic import AnyHttpUrl, BaseSettings, Field
 from fastapi.middleware.cors import CORSMiddleware
-from src.routes import router as url_shortr_router
-from src.logger import logger as logging
 
+from src.controllers import (
+    url_router,
+    user_router,
+    quota_router,
+    aggregation_router,
+)
 
-class Settings(BaseSettings):
-    SECRET_KEY: str = Field("my super secret key", env="SECRET_KEY")
-    CORS_ORIGINS: list[Union[str, AnyHttpUrl]] = [
-        "http://localhost:8000",
-        "http://localhost:3000",
-    ]
-    OPENAPI_CLIENT_ID: str = Field(default="", env="OPENAPI_CLIENT_ID")
-    APP_CLIENT_ID: str = Field(default="", env="APP_CLIENT_ID")
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = True
-
-
-settings = Settings()
+from src.utils.logger import logger as logging
+from . import settings
 
 app = FastAPI()
-app.include_router(url_shortr_router)
+
+app.include_router(url_router, tags=["URL API"])
+app.include_router(user_router, tags=["User API"])
+app.include_router(quota_router, tags=["Quota API"])
+app.include_router(aggregation_router, tags=["Aggregation API"])
+
 
 if settings.CORS_ORIGINS:
     app.add_middleware(
@@ -40,6 +34,12 @@ if settings.CORS_ORIGINS:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+
+@app.get("/config/all")
+def return_config():
+    logging.debug(f"{settings}")
+    return settings.dict()
 
 
 @app.on_event("startup")

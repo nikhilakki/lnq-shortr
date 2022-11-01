@@ -11,13 +11,13 @@ fastapi = "^0.81.0"
 uvicorn = "^0.18.3"
 pydantic = {extras = ["dotenv"], version = "^1.10.1"}
 nanoid = "^2.0.0"
-fastapi-azure-auth = "^3.5.0"
 databases = "^0.6.1"
 SQLAlchemy = "^1.4.40"
 aiosqlite = "^0.17.0"
 asyncpg = "^0.26.0"
 psycopg2-binary = "^2.9.3"
 validators = "^0.20.0"
+PyJWT = {extras = ["crypto"], version = "^2.4.0"}
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
