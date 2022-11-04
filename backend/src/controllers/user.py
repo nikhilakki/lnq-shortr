@@ -4,10 +4,13 @@
 # https://opensource.org/licenses/MIT
 
 from fastapi import APIRouter
+from pydantic import BaseModel
 from src.services import user, UserDto
 
 router = APIRouter()
 
+class GetByEmail(BaseModel):
+    email: str
 
 @router.get("/user/all", status_code=202)
 async def getUsers():
@@ -19,6 +22,13 @@ async def getUser(
     id: int,
 ):
     return await user.getUser(id)
+
+@router.post("/user/find-user-id", status_code=202)
+async def getUserByEmail(
+    email: GetByEmail,
+):
+    print(f"{email=}")
+    return await user.getUserByEmail(email.email)
 
 
 @router.post("/user", status_code=201)

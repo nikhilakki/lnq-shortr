@@ -28,6 +28,11 @@ async def getUser(id: int):
     logging.debug(f"{response=}")
     return response
 
+async def getUserByEmail(email: str):
+    query = user_table.select().where(user_table.c.email == email)
+    response = await database.fetch_one(query)
+    logging.debug(f"{response=}")
+    return {"response": response}
 
 async def createUser(userDto: UserDto):
     query = user_table.insert().values({**userDto.dict()})
