@@ -3,11 +3,13 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
 import LoginComponent from "../Login"
 
 const Navbar = () => {
+  const { data: session } = useSession()
   const navObjects = [
     {
       id: 0,
@@ -37,23 +39,23 @@ const Navbar = () => {
         className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800"
       >
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-          <Link href="https://urlshortr.com">
+          <Link href="https://lnqshortr.com">
             <a className="flex items-center">
               <Image
                 src="/logo.png"
                 className="mr-3 h-6 sm:h-9"
-                alt="urlshortr Logo"
+                alt="lnqshortr Logo"
                 width="20%"
                 height="20%"
               />
               <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-                URL Shortr
+                LNQ Shortr
               </span>
             </a>
           </Link>
           <div className="flex items-center lg:order-2">
             {/* <a href="#" className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log in</a> */}
-            {/* <Link href="#"><LoginBtn name="Login" /></Link> */}
+
             <button
               data-collapse-toggle="mobile-menu-2"
               type="button"
@@ -93,27 +95,33 @@ const Navbar = () => {
             id="mobile-menu-2"
           >
             <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-              <>
-                {navObjects.map((item) => (
-                  <li key={item.id}>
-                    <Link href={item.link}>
-                      <a>{item.name}</a>
+              {!session && (
+                <>
+                  {navObjects.map((item) => (
+                    <li key={item.id}>
+                      <Link href={item.link}>
+                        <a>{item.name}</a>
+                      </Link>
+                    </li>
+                  ))}
+                </>
+              )}
+              {session && (
+                <>
+                  <li>
+                    <Link href="/">
+                      <a>Home</a>
                     </Link>
                   </li>
-                ))}
-              </>
-
-              <li>
-                <Link href="/">
-                  <a>Home</a>
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard">
-                  <a>Dashboard</a>
-                </Link>
-              </li>
+                  <li>
+                    <Link href="/dashboard">
+                      <a>Dashboard</a>
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
+
             <LoginComponent />
           </div>
         </div>
