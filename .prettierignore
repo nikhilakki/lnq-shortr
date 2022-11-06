@@ -1,0 +1,2 @@
+web/*/templates/*.html
+web/*/templates/*/*.html

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% block content %}
+{% if user.is_authenticated %}
+     <!-- Masthead-->
+     <header class="masthead">
+        <div class="container position-relative">
+            <div class="row justify-content-center">
+                <div class="col-xl-6">
+                    <div class="text-center text-white">
+                        <!-- Page heading-->
+                        <h1 class="mb-5">Generate short urls for free!</h1>
+                        <!-- Signup form-->
+                       {% include 'components/shorten_url.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    {% include 'components/table.html' %}
+    {% else %} 
+     <!-- Masthead-->
+     <header class="masthead">
+        <div class="container position-relative">
+            <div class="row justify-content-center">
+                <div class="col-xl-6">
+                    <div class="text-center text-white">
+                        <!-- Page heading-->
+                        <h1 class="mb-5">Generate short urls for free!</h1>
+                        <a class="btn-lg btn btn-primary" href={% url 'SignIn Page' %}>Get started!</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Icons Grid-->
+    <section class="features-icons bg-light text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
+                        <h3>Shorten URLs</h3>
+                        <p class="lead mb-0">create it, share it. as simple as that!</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
+                        <h3>Fast & reliable</h3>
+                        <p class="lead mb-0">Built using rock solid global cloud infrastructure.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
+                        <h3>Bulk upload <em>(coming soon)</em></h3>
+                        <p class="lead mb-0">Upload CSV and get bulk links with in minutes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
+{% endblock %}
