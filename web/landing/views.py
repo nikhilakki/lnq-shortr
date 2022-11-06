@@ -28,3 +28,11 @@ def landing(request):
 
 def signin(request):
     return render(request, "pages/signin.html", {})
+
+
+def privacy(request):
+    return render(request, "pages/privacy.html", {})
+
+
+def tos(request):
+    return render(request, "pages/tos.html", {})
