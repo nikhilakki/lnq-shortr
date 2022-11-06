@@ -10,7 +10,7 @@
 <tbody>
     {% for url in urls %}
     <tr>
-    <th scope="row">{{ url.id }}</th>
+    <th scope="row">{{ forloop.counter }}</th>
     <td><a href={{ url.long_url }}>{{ url.long_url }}</a></td>
     <td><a href={{ url.short_url }}>{{domain}}/{{ url.short_url }}</a></td>
     <td>{{ url.user }}</td>

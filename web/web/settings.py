@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",  # for Google OAuth 2.0
+    # installed apps
     "crispy_forms",
     "crispy_bootstrap5",
     # custom apps
@@ -63,10 +64,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    "/var/www/static/",
-]
 
 ROOT_URLCONF = "web.urls"
 
@@ -146,6 +143,21 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    # "/var/www/static/",
+]
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = "/"
+
+# Additional configuration settings
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
+
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
@@ -162,14 +174,5 @@ SOCIALACCOUNT_PROVIDERS = {
         },
     }
 }
-SITE_ID = 1
-LOGIN_REDIRECT_URL = "/"
-
-# Additional configuration settings
-SOCIALACCOUNT_QUERY_EMAIL = True
-ACCOUNT_LOGOUT_ON_GET = True
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_EMAIL_REQUIRED = True
-
 
 URL_DOMAIN = env("URL_DOMAIN")

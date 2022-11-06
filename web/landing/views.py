@@ -21,4 +21,10 @@ def landing(request):
         urls = []
         if request.user.is_authenticated:
             urls = URL.objects.filter(user=request.user.id)
-    return render(request, "home.html", {"form": form, "urls": urls, "domain": domain})
+    return render(
+        request, "pages/home.html", {"form": form, "urls": urls, "domain": domain}
+    )
+
+
+def signin(request):
+    return render(request, "pages/signin.html", {})
