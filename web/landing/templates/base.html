@@ -9,7 +9,7 @@
         <meta name="author" content="" />
         <title>LNQShortr.com | URL Shortener</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href={% static 'assets/favicon.ico' %} />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
         <!-- Google fonts-->
@@ -22,7 +22,10 @@
         <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
-                <a class="navbar-brand" href="#!">LNQShortr.com</a>
+                <img src={% static 'assets/img/logo.png' %} width="25p">
+                <a class="navbar-brand" href="/">LNQShortr.com</a>
+            </img>
+               
                 {% if user.is_authenticated %}
                     <p class="badge bg-secondary">Logged in as {{ user.socialaccount_set.all.0.extra_data.name }}!</p>
                     <a class="btn btn-primary" href={% url 'account_logout' %}>Logout</a>
