@@ -20,6 +20,5 @@ def landing(request):
         form = ShortenURL()
         urls = []
         if request.user.is_authenticated:
-            print(f"{request.user.id=}")
             urls = URL.objects.filter(user=request.user.id)
     return render(request, "home.html", {"form": form, "urls": urls, "domain": domain})
