@@ -11,6 +11,9 @@ packages = [{include = "lnq_web"}]
 python = "^3.10"
 django = "^4.1.3"
 django-allauth = "^0.51.0"
+django-crispy-forms = "^1.14.0"
+crispy-bootstrap5 = "^0.7"
+nanoid = "^2.0.0"
 
 
 [tool.poetry.group.dev.dependencies]

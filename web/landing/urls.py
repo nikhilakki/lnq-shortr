@@ -6,5 +6,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", view=views.landing_page, name="Landing_Page"),
+    path("", view=views.landing, name="Landing_Page"),
 ]
