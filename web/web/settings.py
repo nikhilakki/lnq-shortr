@@ -145,8 +145,16 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    # "/var/www/static/",
+    # "/app/web/staticfiles/",
 ]
+
+# DJANGO PROD CONFIG
+SECURE_SSL_REDIRECT = env("SECURE_SSL_REDIRECT", default=False)
+CSRF_COOKIE_SECURE = env("CSRF_COOKIE_SECURE", default=False)
+SECURE_HSTS_SECONDS = env("SECURE_HSTS_SECONDS", default=False)
+SESSION_COOKIE_SECURE = env("SESSION_COOKIE_SECURE", default=False)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env("SECURE_HSTS_INCLUDE_SUBDOMAINS", default=False)
+SECURE_HSTS_PRELOAD = env("SECURE_HSTS_PRELOAD", default=False)
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = "/"

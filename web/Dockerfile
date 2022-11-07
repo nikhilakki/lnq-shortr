@@ -1,0 +1,17 @@
+# Copyright (c) 2022 Nikhil Akki
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+FROM python:3.10-slim
+# RUN apk update && apk upgrade
+# RUN apk add build-base
+RUN pip install -U pip poetry==1.2.2
+WORKDIR /app
+COPY . .
+RUN poetry export --without-hashes --format=requirements.txt > requirements.txt
+RUN pip install -r requirements.txt
+# RUN apk del build-base
+EXPOSE 8000
+ENTRYPOINT [ "gunicorn" ]
+CMD ["web.wsgi"]
