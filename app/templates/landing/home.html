@@ -1,0 +1,24 @@
+{% extends 'base.html' %} 
+{% block content %}
+<main class="container">
+    <div class="bg-light p-5 rounded">
+      <h1>Welcome to URL Shortener</h1>
+      <p class="lead">Shortern URL in one click for free!</p>
+      <a class="btn btn-lg btn-primary" href="#" role="button">Show me how&raquo;</a>
+    </div>
+  </main>
+<br />
+<div class="container">
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">URL</span>
+  <input type="text" class="form-control" placeholder="Enter Long URL" aria-label="Long URL" aria-describedby="basic-addon1">
+</div>
+
+<div class="container">
+  <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-secondary">Save</button>
+    </form>
+</div>
+{% include 'landing/table.html' %}
+{% endblock %}

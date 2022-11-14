@@ -1,0 +1,20 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Long URL</th>
+      <th scope="col">Short URL</th>
+      <th scope="col">User</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <th scope="row"> {{ forloop.counter }}</th>
+      <td><a href={{ row.long_url }}>{{ row.long_url }}</a></td>
+      <td><a href='http://localhost:5000/{{ row.short_url }}'</a>http://localhost:5000/{{ row.short_url }}</td>
+      <td>{{ row.user }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

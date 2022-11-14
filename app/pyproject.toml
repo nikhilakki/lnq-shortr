@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["Nikhil Akki <36913184+niakki@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "3.2.6"
+gunicorn = "20.1.0"
+psycopg2-binary = "2.9.1"
+django-bootstrap-v5 = "^1.0.11"
+nanoid = "^2.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
