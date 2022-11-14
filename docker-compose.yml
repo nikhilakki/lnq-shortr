@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  url-resolver:
+    build: ./url-resolver
+    environment:
+      - PGSQL=postgres://web:web@db:5432/web_dev?sslmode=disable
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+  web:
+    build: ./app
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app/:/usr/src/app/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=web
+      - POSTGRES_PASSWORD=web
+      - POSTGRES_DB=web_dev
+
+volumes:
+  postgres_data:
