@@ -4,7 +4,6 @@ from .forms import URLForm
 from .models import URL
 # Create your views here.
 def home(request):   
-    rows = URL.objects.filter(user=request.user)
     if request.method == "POST":
         form = URLForm(request.POST)
         if form.is_valid():
@@ -15,6 +14,7 @@ def home(request):
             return redirect('/', pk=url.pk)
     else:
         form = URLForm()
+    rows = URL.objects.filter(user=request.user)
     return render(request, "landing/home.html", {'form': form, 'rows': rows})
 
 def about(request):
