@@ -21,7 +21,7 @@ This app is URL-Link shorter service built using Python-FastAPI
 
 Uses the default Django development server.
 
-1. Rename *.env.dev-sample* to *.env.dev*.
+1. Rename *sample.env.dev* to *.env.dev*.
 1. Update the environment variables in the *docker-compose.yml* and *.env.dev* files.
 1. Build the images and run the containers:
 
@@ -35,8 +35,8 @@ Uses the default Django development server.
 
 Uses gunicorn + nginx.
 
-1. Rename *.env.prod-sample* to *.env.prod* and *.env.prod.db-sample* to *.env.prod.db*. Update the environment variables.
-1. Build the images and run the containers:
+1. Rename *sample.env.prod* to *.env.prod* and *sample.env.prod-db* to *.env.prod.db*. Update the environment variables.
+2. Build the images and run the containers:
 
     ```sh
     $ docker-compose -f docker-compose.prod.yml up -d --build
