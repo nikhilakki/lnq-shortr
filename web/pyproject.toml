@@ -2,9 +2,10 @@
 name = "lnq-web"
 version = "0.1.0"
 description = "Web interface of lnqshortr.com"
-authors = ["Nikhil Akki"]
+authors = ["Nikhil Akki <nikhil.akki@outlook.com>"]
 license = "AGPLv3"
 readme = "README.md"
+
 
 [tool.poetry.dependencies]
 python = "^3.10"
